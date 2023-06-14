@@ -18,6 +18,6 @@ jobs:
         uses: mikepenz/gradle-dependency-submission@v0.8.6
         with:
           gradle-project-path: .
-          gradle-build-module: |-
-            :rmi
-            :rmi-stubs
+          gradle-build-module: .
+          use-gradlew: false
+      
