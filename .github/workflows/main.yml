@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    name: Dependencies
+    name: buildDependents
     runs-on: ubuntu-latest
     permissions: # The Dependency Submission API requires write permission
       contents: write
@@ -17,7 +17,7 @@ jobs:
       - name: Run snapshot action
         uses: mikepenz/gradle-dependency-submission@v0.8.6
         with:
-          gradle-project-path: ./rmi
+          gradle-project-path: .
           gradle-build-module: .
           use-gradlew: false
       
