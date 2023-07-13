@@ -34,7 +34,7 @@ jobs:
 
       - name: Generate changelog
         id: changelog
-        uses: github-changelog-generator/action@v1
+        uses: heinrichreimer/github-changelog-generator-action@v2.3
         env:
           GITHUB_TOKEN: ${{ secrets.NEWRELIC_BUILD_TOKEN }}
 
@@ -54,7 +54,7 @@ jobs:
       - name: Update release
         uses: actions/github-script@v4
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.NEWRELIC_BUILD_TOKEN }}
         with:
           script: |
             const fs = require('fs');
