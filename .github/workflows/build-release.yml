@@ -34,7 +34,7 @@ jobs:
 
       - name: Generate changelog
         id: changelog
-        uses: ReleasePlease/action@v1
+        uses: github-changelog-generator/action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.NEWRELIC_BUILD_TOKEN }}
 
