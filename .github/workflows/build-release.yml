@@ -61,8 +61,7 @@ jobs:
             const body = fs.readFileSync('release_body.txt', 'utf8');
             github.repos.updateRelease({
               owner: context.repo.owner,
-              repo: context.repo.repo,
-              release_id: ${{ steps.create_release.outputs.release_name }}
+              repo: context.repo.repo
             });
 
       - name: Save release notes to file
