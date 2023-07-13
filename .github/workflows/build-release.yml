@@ -30,12 +30,12 @@ jobs:
 
       - name: Get workflow run number
         id: workflow_run_number
-        run: echo "::set-output name=run_number::${{ github.run_number }}"
+        run: echo "RUN_NUMBER=${{ github.run_number }}" >> $GITHUB_ENV
 
 
       - name: Create tag
         id: create_tag
-        run: echo "TAG=v${{ steps.workflow_run_number.outputs.run_number }}" >> $GITHUB_ENV
+        run: echo "TAG=v${{ env.RUN_NUMBER }}" >> $GITHUB_ENV
 
       - name: Create release
         id: create_release
