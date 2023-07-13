@@ -68,7 +68,7 @@ jobs:
                 tag_name: ${{ env.TAG }},
               });
 
-              console.log(`Release published: ${createReleaseResponse.data.html_url}`);
+              console.log(`Release published: ${response.data.html_url}`);
             } catch (error) {
               core.setFailed(error.message);
             }
