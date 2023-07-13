@@ -22,22 +22,24 @@ jobs:
       - name: Build project
         run: ./gradlew build
 
+      - name: Get branch name
+        id: branch_name
+        run: echo ::set-output name=branch::${GITHUB_REF#refs/heads/}
+
+      - name: Create tag
+        id: create_tag
+        run: echo ::set-output name=tag::v1.0.0-${{ steps.branch_name.outputs.branch }}
+
       - name: Create release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.NEWRELIC_BUILD_TOKEN }}
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          tag_name: ${{ steps.create_tag.outputs.tag }}
+          release_name: Release ${{ steps.create_tag.outputs.tag }}
           draft: false
           prerelease: false
-
-      - name: Generate changelog
-        id: changelog
-        uses: heinrichreimer/github-changelog-generator-action@v2.3
-        env:
-          GITHUB_TOKEN: ${{ secrets.NEWRELIC_BUILD_TOKEN }}
 
       - name: Publish release
         uses: actions/upload-release-asset@v1
@@ -50,7 +52,7 @@ jobs:
           asset_content_type: text/plain
 
       - name: Set release body
-        run: echo "${{ steps.changelog.outputs.changelog }}" > release_body.txt
+        run: echo "See the attached changelog for release details." > release_body.txt
 
       - name: Update release
         uses: actions/github-script@v4
