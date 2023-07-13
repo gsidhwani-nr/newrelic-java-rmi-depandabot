@@ -26,9 +26,14 @@ jobs:
         id: branch_name
         run: echo ::set-output name=branch::${GITHUB_REF#refs/heads/}
 
+      - name: Get workflow run number
+        id: workflow_run_number
+        run: echo "::set-output name=run_number::${{ github.run_number }}"
+
       - name: Create tag
         id: create_tag
-        run: echo ::set-output name=tag::v1.0.0-${{ steps.branch_name.outputs.branch }}
+        run: echo "::set-output name=tag::v${{ steps.workflow_run_number.outputs.run_number }}"
+
 
       - name: Create release
         id: create_release
