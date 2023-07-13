@@ -52,7 +52,7 @@ jobs:
         run: echo "See the attached changelog for release details." > release_body.txt
 
       - name: Update release
-        uses: actions/github-script@v6
+        uses: actions/github-script@v4
         env:
           GITHUB_TOKEN: ${{ secrets.NEWRELIC_BUILD_TOKEN }}
         with:
@@ -61,8 +61,11 @@ jobs:
             const body = fs.readFileSync('release_body.txt', 'utf8');
             github.repos.updateRelease({
               owner: context.repo.owner,
-              repo: context.repo.repo
+              repo: context.repo.repo,
+              release_id: ${{ steps.create_release.outputs.release_id }},
+              body: body
             });
+
 
       - name: Save release notes to file
         run: echo "${{ steps.create_release.outputs.body }}" > CHANGELOG.md
