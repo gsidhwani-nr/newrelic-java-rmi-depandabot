@@ -60,7 +60,7 @@ jobs:
         run: echo "See the attached changelog for release details." > release_body.txt
 
       - name: Update release
-        uses: actions/github-script@v6
+        uses: actions/github-script@v3
         env:
           GITHUB_TOKEN: ${{ secrets.NEWRELIC_BUILD_TOKEN }}
         with:
