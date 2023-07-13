@@ -62,7 +62,7 @@ jobs:
             github.repos.updateRelease({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              release_id: ${{ steps.create_release.outputs.release_id }}
+              release_id: ${{ steps.create_release.outputs.release_name }}
             });
 
       - name: Save release notes to file
