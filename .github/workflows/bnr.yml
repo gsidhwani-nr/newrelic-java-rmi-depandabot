@@ -50,7 +50,7 @@ jobs:
         id: generate_changelog
         run: |
           echo "Generating changelog..."
-          previous_tag="$(git describe --abbrev=0 --tags HEAD^ 2>/dev/null)"
+          previous_tag="v1.52"
           echo "previous_tag=$previous_tag" >> $GITHUB_ENV
           changelog=$(git log --pretty=format:"- %s (%h)" $previous_tag..HEAD)
           echo "changelog=$changelog" >> $GITHUB_ENV
