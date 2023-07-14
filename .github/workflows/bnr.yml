@@ -74,11 +74,10 @@ jobs:
               }
       - name: Upload Release Artifacts
         uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.NEWRELIC_BUILD_TOKEN }}
         with:
           asset_path: /tmp/release/release_${{ steps.set_tag.outputs.tag }}.zip
-          repository: ${{ github.repository }}
-          tag: ${{ steps.set_tag.outputs.tag }}
-          token: ${{ secrets.NEWRELIC_BUILD_TOKEN }}
           upload_url: ${{ steps.create_release.outputs.upload_url }} 
           asset_content_type: application/zip
         
