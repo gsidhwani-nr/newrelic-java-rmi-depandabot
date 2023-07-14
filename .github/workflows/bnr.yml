@@ -54,9 +54,9 @@ jobs:
         id: generate_changelog
         run: |
           echo "Generating changelog..."
-          echo previous_tag=$(git describe --abbrev=0 --tags) 
-          echo changelog=$(git log --pretty=format:"- %s (%h)" $previous_tag..HEAD)
-          echo "$changelog:::::$previous_tag" 
+          previous_tag=$(git describe --abbrev=0 --tags) 
+          changelog=$(git log --pretty=format:"- %s (%h)" $previous_tag..HEAD)
+          echo "${changelog}:::::${previous_tag}" 
           echo "${{steps.generate_changelog.outputs.changelog}}:::::${{steps.generate_changelog.outputs.previous_tag}}"   
           
       - name: Create Release
