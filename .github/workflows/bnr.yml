@@ -48,9 +48,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.NEWRELIC_BUILD_TOKEN }}
         with:
           script: |
-            const changelog = `Release Changelog:\n\n${{ steps.generate_changelog.outputs.changelog }}`
-            const tag = ${{ needs.build.outputs.tag }}
-            const createReleaseResponse = await github.repos.createRelease({
+            const changelog = "Release Changelog:\n\n" + steps.generate_changelog.outputs.changelog;
+            const tag = needs.build.outputs.tag;
+            github.repos.createRelease({
               owner: context.repo.owner,
               repo: context.repo.repo,
               tag_name: tag,
@@ -58,6 +58,8 @@ jobs:
               body: changelog,
               draft: false,
               prerelease: false
-            })
-            console.log(`Release published: ${createReleaseResponse.data.html_url}`)
-
+            }).then(function(response) {
+              console.log("Release published: " + response.data.html_url);
+            }).catch(function(error) {
+              console.error("Error creating release:", error);
+            });
