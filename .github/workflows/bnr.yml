@@ -79,4 +79,6 @@ jobs:
           repository: ${{ github.repository }}
           tag: ${{ steps.set_tag.outputs.tag }}
           token: ${{ secrets.NEWRELIC_BUILD_TOKEN }}
+          upload_url: ${{ steps.create_release.outputs.upload_url }} 
+          asset_content_type: application/zip
         
