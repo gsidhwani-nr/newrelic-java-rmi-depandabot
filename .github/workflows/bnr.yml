@@ -30,15 +30,14 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build install
 
-      - name: Upload Release Artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: release-artifacts
-          path: /tmp/*.jar
-
       - name: Set Tag
         id: set_tag
         run: echo "::set-output name=tag::v${{ github.run_number }}"
+        
+      - name: Create Archive
+        run: |
+          mkdir /tmp/release
+          zip -r /tmp/release/release_${{ steps.set_tag.outputs.tag }}.zip /tmp/*.jar
 
       - name: Generate Changelog
         id: generate_changelog
@@ -56,6 +55,7 @@ jobs:
             try {
                 var changelog = `Release Changelog:\n\n${{ steps.generate_changelog.outputs.changelog }}`;
                 var tag = '' + `${{ steps.set_tag.outputs.tag }}`;
+                const archivePath = '/tmp/release/release_${{ steps.set_tag.outputs.tag }}.zip';
                 var response = await github.rest.repos.createRelease({
                   draft:false,
                   generate_release_notes:true,
@@ -72,4 +72,11 @@ jobs:
               } catch (error) {
                 core.setFailed(error.message);
               }
+      - name: Upload Release Artifacts
+        uses: actions/upload-release-asset@v1
+        with:
+          asset-path: /tmp/release/release_${{ steps.set_tag.outputs.tag }}.zip
+          repository: ${{ github.repository }}
+          tag: ${{ steps.set_tag.outputs.tag }}
+          token: ${{ secrets.NEWRELIC_BUILD_TOKEN }}
         
