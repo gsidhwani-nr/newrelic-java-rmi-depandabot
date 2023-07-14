@@ -25,7 +25,7 @@ jobs:
         id: set_ext_dir
         run: |
           echo "Setting Extensions Dir..."
-          export NEW_RELIC_EXTENSIONS_DIR=/tmp
+          echo "NEW_RELIC_EXTENSIONS_DIR=/tmp" >> $GITHUB_ENV
         
       - name: Build with Gradle
         run: ./gradlew build install
