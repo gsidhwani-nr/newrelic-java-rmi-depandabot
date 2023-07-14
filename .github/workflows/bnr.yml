@@ -33,7 +33,7 @@ jobs:
           echo "Setting Extensions Dir..."
           mkdir /tmp/from
           mkdir /tmp/to
-          echo "NEW_RELIC_EXTENSIONS_DIR=/tmp/release" >> $GITHUB_ENV
+          echo "NEW_RELIC_EXTENSIONS_DIR=/tmp/from" >> $GITHUB_ENV
         
       - name: Build with Gradle
         run: ./gradlew build install
