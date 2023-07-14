@@ -43,23 +43,21 @@ jobs:
           echo "::set-output name=changelog::$changelog"
 
       - name: Create Release
-        uses: actions/github-script@v6
+        uses: actions/github-script@v3
         env:
           GITHUB_TOKEN: ${{ secrets.NEWRELIC_BUILD_TOKEN }}
         with:
           script: |
-            const changelog = "Release Changelog:\n\n" + steps.generate_changelog.outputs.changelog;
-            const tag = needs.build.outputs.tag;
-            github.repos.createRelease({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
+            script: |
+            const changelog = "Release Changelog:\n\n" + github.context.payload.inputs.changelog;
+            const tag = '${{ needs.build.outputs.tag }}';
+            const createReleaseResponse = await github.repos.createRelease({
+              owner: github.context.repo.owner,
+              repo: github.context.repo.repo,
               tag_name: tag,
               name: tag,
               body: changelog,
               draft: false,
               prerelease: false
-            }).then(function(response) {
-              console.log("Release published: " + response.data.html_url);
-            }).catch(function(error) {
-              console.error("Error creating release:", error);
             });
+            console.log(`Release published: ${createReleaseResponse.data.html_url}`);
