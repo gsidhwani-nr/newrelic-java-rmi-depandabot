@@ -54,10 +54,10 @@ jobs:
         id: generate_changelog
         run: |
           echo "Generating changelog..."
-          echo "previous_tag=$(git describe --abbrev=0 --tags)" >> $GITHUB_ENV
-          echo "changelog=$(git log --pretty=format:"- %s (%h)" $previous_tag..HEAD)" >> $GITHUB_ENV
+          echo previous_tag=$(git describe --abbrev=0 --tags) 
+          echo changelog=$(git log --pretty=format:"- %s (%h)" $previous_tag..HEAD)
           echo "$changelog:::::$previous_tag" 
-          echo "${{env.changelog}}:::::${{env.previous_tag}}"   
+          echo "${{steps.generate_changelog.outputs.changelog}}:::::${{steps.generate_changelog.outputs.previous_tag}}"   
           
       - name: Create Release
         id: create_release
