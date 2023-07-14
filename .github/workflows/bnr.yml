@@ -33,7 +33,12 @@ jobs:
           echo "NEW_RELIC_EXTENSIONS_DIR=${HOME}/release" >> $GITHUB_ENV
         
       - name: Build with Gradle
-        run: ./gradlew build install
+        run: | 
+          ./gradlew build install
+          previous_tag=$(git describe --abbrev=0 --tags)
+          echo "previous_tag=$previous_tag" >> $GITHUB_ENV
+          echo "previous_tag1: $previous_tag"
+          echo "previous_tag2: ${{env.previous_tag}}"
 
       - name: Set Tag
         id: set_tag
@@ -50,10 +55,7 @@ jobs:
         id: generate_changelog
         run: |
           echo "Generating changelog..."
-          previous_tag=$(git describe --abbrev=0 --tags)
-          echo "previous_tag=$previous_tag" >> $GITHUB_ENV
-          echo "previous_tag1: $previous_tag"
-          echo "previous_tag2: ${{env.previous_tag}}"
+          
           changelog=$(git log --pretty=format:"- %s (%h)" $previous_tag..HEAD)
           echo "changelog=$changelog" >> $GITHUB_ENV
           echo "changelog1: $changelog"
