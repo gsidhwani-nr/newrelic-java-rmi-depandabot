@@ -53,11 +53,11 @@ jobs:
                 var response = await github.rest.repos.createRelease({
                   draft:false,
                   generate_release_notes:true,
-                  name:tag,
+                  name:'v_16',
                   owner:github.context.repo.owner,
                   prerelease:false,
                   repo:github.context.repo.repo,
-                  tag_name:tag,
+                  tag_name:'v_16',
                   body:changelog
                 });
 
