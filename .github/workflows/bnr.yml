@@ -49,15 +49,15 @@ jobs:
           script: |
             try {
                 var changelog = `Release Changelog:\n\n${{ steps.generate_changelog.outputs.changelog }}`;
-                var tag = '' + ${{ steps.set_tag.outputs.tag }};
+                var tag = '' + `${{ steps.set_tag.outputs.tag }}`;
                 var response = await github.rest.repos.createRelease({
                   draft:false,
                   generate_release_notes:true,
-                  name:'v_16',
+                  name:tag,
                   owner:github.context.repo.owner,
                   prerelease:false,
                   repo:github.context.repo.repo,
-                  tag_name:'v_16',
+                  tag_name:tag,
                   body:changelog
                 });
 
