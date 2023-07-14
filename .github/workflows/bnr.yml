@@ -49,7 +49,7 @@ jobs:
           script: |
             try {
                 var changelog = "Release Changelog:\n\n" + github.context.payload.inputs.changelog;
-                var tag = '' + ${{ needs.build.outputs.tag }};
+                var tag = '' + ${{ steps.set_tag.outputs.tag }};
                 var response = await github.rest.repos.createRelease({
                   draft:false,
                   generate_release_notes:true,
