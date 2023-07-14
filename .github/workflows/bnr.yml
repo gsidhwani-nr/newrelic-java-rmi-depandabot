@@ -55,7 +55,7 @@ jobs:
           echo "Generating changelog..."
           previous_tag=$(git describe --abbrev=0 --tags HEAD^ 2>/dev/null || git rev-list --max-parents=0 HEAD)
           changelog=$(git log --pretty=format:"- %s (%h)" $previous_tag..HEAD)
-          echo "::set-output name=changelog::$changelog"
+          echo "changelog=$changelog" >> $GITHUB_ENV
 
       - name: Create Release
         id: create_release
@@ -64,7 +64,7 @@ jobs:
           github-token: ${{ secrets.NEWRELIC_BUILD_TOKEN }}
           script: |
             try {
-                var changelog = `Release Changelog:\n\n${{ steps.generate_changelog.outputs.changelog }}`;
+                var changelog = `Release Changelog:\n\n${changelog}`;
                 var tag = '' + `${{ steps.set_tag.outputs.tag }}`;
                 const archivePath = '/tmp/to/release_${{ steps.set_tag.outputs.tag }}.zip';
                 var response = await github.rest.repos.createRelease({
