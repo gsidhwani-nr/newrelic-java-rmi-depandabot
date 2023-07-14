@@ -38,7 +38,7 @@ jobs:
         id: generate_changelog
         run: |
           echo "Generating changelog..."
-          previous_tag=$(git describe --abbrev=0 --tags HEAD^ || echo "root")
+          previous_tag=$(git describe --abbrev=0 --tags HEAD^ 2>/dev/null || git rev-list --max-parents=0 HEAD)
           changelog=$(git log --pretty=format:"- %s (%h)" $previous_tag..HEAD)
           echo "::set-output name=changelog::$changelog"
 
