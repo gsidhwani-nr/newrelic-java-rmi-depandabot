@@ -54,9 +54,9 @@ jobs:
                   draft:false,
                   generate_release_notes:true,
                   name:tag,
-                  owner:github.context.repo.owner,
+                  owner:context.repo.owner,
                   prerelease:false,
-                  repo:github.context.repo.repo,
+                  repo:context.repo.repo,
                   tag_name:tag,
                   body:changelog
                 });
