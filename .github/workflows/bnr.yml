@@ -31,9 +31,9 @@ jobs:
         id: set_ext_dir
         run: |
           echo "Setting Extensions Dir..."
-          mkdir /tmp/from
+          mkdir release
           mkdir /tmp/to
-          echo "NEW_RELIC_EXTENSIONS_DIR=/tmp/from" >> $GITHUB_ENV
+          echo "NEW_RELIC_EXTENSIONS_DIR=release" >> $GITHUB_ENV
         
       - name: Build with Gradle
         run: ./gradlew build install
@@ -44,7 +44,7 @@ jobs:
         
       - name: Create Archive
         run: |
-          zip -r /tmp/to/release_${{ steps.set_tag.outputs.tag }}.zip /tmp/from/*.jar
+          zip -r /tmp/to/release_${{ steps.set_tag.outputs.tag }}.zip /tmp/release/*.jar
 
       - name: Generate Changelog
         id: generate_changelog
