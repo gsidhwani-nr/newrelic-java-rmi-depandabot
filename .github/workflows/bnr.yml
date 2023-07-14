@@ -44,7 +44,7 @@ jobs:
         
       - name: Create Archive
         run: |
-          zip -r /tmp/to/release_${{ steps.set_tag.outputs.tag }}.zip ${HOME}/release/*.jar
+          zip  /tmp/to/release_${{ steps.set_tag.outputs.tag }}.zip ${HOME}/release/*.jar
 
       - name: Generate Changelog
         id: generate_changelog
