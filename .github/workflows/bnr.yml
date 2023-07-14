@@ -48,8 +48,8 @@ jobs:
           github-token: ${{ secrets.NEWRELIC_BUILD_TOKEN }}
           script: |
             try {
-                var changelog = "Release Changelog:\n\n" + github.context.payload.inputs.changelog
-                var tag = '' + ${{ needs.build.outputs.tag }}
+                var changelog = "Release Changelog:\n\n" + github.context.payload.inputs.changelog;
+                var tag = '' + ${{ needs.build.outputs.tag }};
                 var response = await github.rest.repos.createRelease({
                   draft:false,
                   generate_release_notes:true,
