@@ -79,6 +79,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.NEWRELIC_BUILD_TOKEN }}
         with:
           asset_path: /tmp/release/release_${{ steps.set_tag.outputs.tag }}.zip
-          upload_url: ${{ steps.create_release.outputs.upload_url }} 
+          upload_url: ${{ steps.create_release.outputs.RELEASE_UPLOAD_URL }} 
           asset_content_type: application/zip
         
