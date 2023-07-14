@@ -47,7 +47,7 @@ jobs:
           echo "CURRENT=${PWD}" >> $GITHUB_ENV
           cd ${HOME}/release
           zip -r /tmp/to/release_${{ steps.set_tag.outputs.tag }}.zip *.jar
-          cd ${env.CURRENT}
+          cd ${{env.CURRENT}}
 
       - name: Generate Changelog
         id: generate_changelog
