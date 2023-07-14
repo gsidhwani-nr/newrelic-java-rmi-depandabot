@@ -45,9 +45,11 @@ jobs:
       - name: Create Release
         uses: actions/github-script@v6
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.NEWRELIC_BUILD_TOKEN }}
           script: |
             try {
+                const changelog = "Release Changelog:\n\n" + github.context.payload.inputs.changelog;
+                const tag = '' + ${{ needs.build.outputs.tag }};
                 const response = await github.rest.repos.createRelease({
                   draft:false,
                   generate_release_notes:true,
