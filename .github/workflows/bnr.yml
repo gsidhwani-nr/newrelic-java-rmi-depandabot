@@ -20,7 +20,13 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 8
-      
+          
+      - name: Set Major Release
+        id: major
+        run: |
+          echo "Setting Extensions Dir..."
+          echo "MAJOR=1" >> $GITHUB_ENV
+          
       - name: Set Extensions Dir
         id: set_ext_dir
         run: |
@@ -79,7 +85,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.NEWRELIC_BUILD_TOKEN }}
         with:
           asset_path: /tmp/release/release_${{ steps.set_tag.outputs.tag }}.zip
-          asset_name: elease_${{ steps.set_tag.outputs.tag }}.zip
+          asset_name: release_${{ env.MAJOR }}.${{ steps.set_tag.outputs.tag }}.zip
           upload_url: ${{ env.RELEASE_UPLOAD_URL }} 
           asset_content_type: application/zip
         
