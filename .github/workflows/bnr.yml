@@ -20,15 +20,21 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 8
-
+      
+      - name: Set Extensions Dir
+        id: set_ext_dir
+        run: |
+          echo "Setting Extensions Dir..."
+          export NEW_RELIC_EXTENSIONS_DIR=/tmp
+        
       - name: Build with Gradle
-        run: ./gradlew build
+        run: ./gradlew build install
 
       - name: Upload Release Artifacts
         uses: actions/upload-artifact@v2
         with:
           name: release-artifacts
-          path: build/libs/*.jar
+          path: /tmp/*.jar
 
       - name: Set Tag
         id: set_tag
