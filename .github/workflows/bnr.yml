@@ -34,9 +34,9 @@ jobs:
           mkdir /tmp/to
           echo "NEW_RELIC_EXTENSIONS_DIR=${HOME}/release" >> $GITHUB_ENV
         
-      - name: Build with Gradle
+      - name: Build with Gradle and verifyInstrumentation
         run: | 
-          ./gradlew build install
+          ./gradlew build install verifyInstrumentation
 
 
       - name: Set Tag
