@@ -46,7 +46,7 @@ jobs:
             # Extract the major and minor versions from the latest tag
             current_major_version=$(echo $latest_tag | cut -d'.' -f1 | sed 's/v//')
             current_minor_version=$(echo $latest_tag | cut -d'.' -f2)
-            echo "Step3" 
+            
             # Increment the minor version if it's less than 9
             if [[ $current_minor_version -lt 9 ]]; then
               minor_version=$((current_minor_version + 1))
