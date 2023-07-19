@@ -43,10 +43,10 @@ jobs:
         run: |
           major_version=1
           minor_version=0
-          echo "Step1" 
+
           # Retrieve the latest release tag
           latest_tag=$(git describe --abbrev=0 --tags 2>/dev/null)
-          echo "Step2" 
+ 
           if [[ -n "$latest_tag" && $latest_tag == v* ]]; then
             # Extract the major and minor versions from the latest tag
             current_major_version=$(echo $latest_tag | cut -d'.' -f1 | sed 's/v//')
