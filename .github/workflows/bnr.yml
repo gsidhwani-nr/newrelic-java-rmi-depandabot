@@ -20,11 +20,6 @@ jobs:
         with:
           java-version: 8
           
-      - name: Set Major Release
-        id: major
-        run: |
-          echo "Setting Extensions Dir..."
-          echo "MAJOR=1" >> $GITHUB_ENV
           
       - name: Set Extensions Dir
         id: set_ext_dir
