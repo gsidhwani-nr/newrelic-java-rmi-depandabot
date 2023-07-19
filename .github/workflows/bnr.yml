@@ -74,7 +74,7 @@ jobs:
         id: set_release_name
         run: |
           repo_name="${{ github.repository }}"
-          sanitized_repo_name=${repo_name#"newrelic-java-"}
+          sanitized_repo_name=$(echo "$repo_name" | awk -F 'newrelic-java-' '{print $2}')
           echo "RELEASE_NAME=${sanitized_repo_name}-instrumentation-" >> $GITHUB_ENV
         
       - name: Create Archive
