@@ -102,7 +102,7 @@ jobs:
             try {
                 var changelog = `Release Changelog:\n\n${{ env.LOG }}`;
                 var tag = '' + `${{ steps.set_tag.outputs.tag }}`;
-                const archivePath = '/tmp/to/release_${{ steps.set_tag.outputs.tag }}.zip';
+                const archivePath = '/tmp/to/${{ env.RELEASE_NAME}}${{ steps.set_tag.outputs.tag }}.zip';
                 var response = await github.rest.repos.createRelease({
                   draft:false,
                   generate_release_notes:true,
