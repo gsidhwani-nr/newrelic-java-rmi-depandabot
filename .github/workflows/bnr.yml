@@ -40,7 +40,7 @@ jobs:
           minor_version=0
 
           # Retrieve the latest release tag
-          latest_tag=$(git describe --abbrev=0 --tags 2>/dev/null)
+          latest_tag=$(git describe --abbrev=0 --tags 2>/dev/null) || true
  
           if [[ -n "$latest_tag" && $latest_tag == v* ]]; then
             # Extract the major and minor versions from the latest tag
