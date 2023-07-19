@@ -38,16 +38,50 @@ jobs:
         run: | 
           ./gradlew build install verifyInstrumentation
 
+      - name: Set release version
+        id: set_release_version
+        run: |
+          major_version=1
+          minor_version=0
 
+          # Retrieve the latest release tag
+          latest_tag=$(git describe --abbrev=0 --tags)
+
+          if [[ $latest_tag == v* ]]; then
+            # Extract the major and minor versions from the latest tag
+            current_major_version=$(echo $latest_tag | cut -d'.' -f1 | sed 's/v//')
+            current_minor_version=$(echo $latest_tag | cut -d'.' -f2)
+
+            # Increment the minor version if it's less than 9
+            if [[ $current_minor_version -lt 9 ]]; then
+              minor_version=$((current_minor_version + 1))
+            else
+              # Increment the major version and reset the minor version to 0
+              major_version=$((current_major_version + 1))
+              minor_version=0
+            fi
+          fi
+
+          # Set the release version environment variable
+          release_version="v${major_version}.${minor_version}"
+          echo "RELEASE_VERSION=${release_version}" >> $GITHUB_ENV
+          
       - name: Set Tag
         id: set_tag
-        run: echo "::set-output name=tag::v${{ env.MAJOR }}.${{ github.run_number }}"
+        run: echo "::set-output name=tag::${{ env.RELEASE_VERSION }}"
+        
+      - name: Set release name
+        id: set_release_name
+        run: |
+          repo_name="${{ github.repository }}"
+          sanitized_repo_name=${repo_name#"newrelic-java-"}
+          echo "RELEASE_NAME=${sanitized_repo_name}-instrumentation-" >> $GITHUB_ENV
         
       - name: Create Archive
         run: |
           echo "CURRENT=${PWD}" >> $GITHUB_ENV
           cd ${HOME}/release
-          zip -r /tmp/to/release_${{ steps.set_tag.outputs.tag }}.zip *.jar
+          zip -r /tmp/to/${{ env.RELEASE_NAME}}${{ steps.set_tag.outputs.tag }}.zip *.jar
           cd ${{env.CURRENT}}
 
       - name: Generate Changelog
