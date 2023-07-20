@@ -22,7 +22,7 @@ Provides instrumentation for the Java RMI on both the server and client side.
 
 ## Installation 
 
-This use this instrumentation.   Added
+This use this instrumentation.  
 1. Download the latest release.    
 2. In the New Relic Java Agent directory (directory containing newrelic.jar), create a directory named extensions if it doe not already exist.   
 3. Copy the jars into the extensions directory.   
