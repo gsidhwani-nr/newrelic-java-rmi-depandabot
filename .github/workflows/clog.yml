@@ -8,6 +8,6 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: "✏️ Generate release changelog"
-        uses: heinrichreimer/github-changelog-generator-action@v2.3
+        uses: scottbrenner/generate-changelog-action@master
         with:
           token: ${{ secrets.NEWRELIC_BUILD_TOKEN }} 
