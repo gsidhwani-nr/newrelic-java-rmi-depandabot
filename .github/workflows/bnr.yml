@@ -94,7 +94,7 @@ jobs:
         id: create_release
         uses: actions/github-script@v6
         with:
-          github-token: ${{ github.token }}
+          github-token: ${{ secrets.NEWRELIC_BUILD_TOKEN }}
           script: |
             try {
                 var changelog = `Release Changelog:\n\n${{ env.LOG }}`;
@@ -119,7 +119,7 @@ jobs:
       - name: Upload Release Artifacts
         uses: actions/upload-release-asset@v1
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ secrets.NEWRELIC_BUILD_TOKEN }}
         with:
           asset_path: /tmp/to/${{ env.RELEASE_NAME}}${{ steps.set_tag.outputs.tag }}.zip
           asset_name: ${{ env.RELEASE_NAME}}${{ steps.set_tag.outputs.tag }}.zip
