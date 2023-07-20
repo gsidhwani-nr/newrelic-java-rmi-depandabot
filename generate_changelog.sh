@@ -1,48 +1,38 @@
 #!/bin/bash
 
-# Function to create changelog sections for different commit types
-create_changelog_section() {
-  local section_title="$1"
-  local commits="$2"
-  if [[ -n "$commits" ]]; then
-    echo "$section_title" >> CHANGELOG.md
-    echo >> CHANGELOG.md
-    echo "$commits" >> CHANGELOG.md
-    echo >> CHANGELOG.md
-  fi
-}
+COLOR_RED='\033[0;31m'
+COLOR_NONE='\033[0m'
+CURRENT_GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
-echo "Generating changelog..."
-previous_tag=$(git describe --abbrev=0 --tags 2>/dev/null) || true
+if [ $CURRENT_GIT_BRANCH != 'master' ]; then
+  printf "\n"
+  printf "${COLOR_RED} Error: The release.sh script must be run while on the master branch. \n ${COLOR_NONE}"
+  printf "\n"
 
-# Get the current date in YYYY-MM-DD format
-release_date=$(date +"%Y-%m-%d")
-
-# Create the release notes for the current release
-release_notes="##Release Notes:\n\n## $RELEASE_VERSION($release_date)\n\n"
-
-if [[ -n "$previous_tag" ]]; then
-  # Pull the latest changes from the remote repository
-  git pull origin main
-
-  # Use awk to filter commit messages by type and format them
-  changelog=$(git log --pretty=format:"-%s (%h)" "$previous_tag"..HEAD |
-    awk '/^-( feat|fix|docs|style|refactor|perf|test|chore|build|ci|revert)(\(.+\))?:/ {gsub(/^-/, ""); print}')
-
-  # Accumulate the changes for the current release
-  release_notes+=$(create_changelog_section "Features" "$(echo "$changelog" | grep -E '^feat')")
-  release_notes+=$(create_changelog_section "Documentation" "$(echo "$changelog" | grep -E '^docs')")
+  exit 1
 fi
 
-# Update the existing CHANGELOG.md file with the new release notes
-echo -e "$release_notes\n$(cat CHANGELOG.md)" > CHANGELOG.md
+if [ $# -ne 1 ]; then
+  printf "\n"
+  printf "${COLOR_RED} Error: Release version argument required. \n\n ${COLOR_NONE}"
+  printf " Example: \n\n    ./tools/release.sh 0.9.0 \n\n"
+  printf "  Example (make): \n\n    make release version=0.9.0 \n"
+  printf "\n"
 
-# Commit the updated CHANGELOG.md file
+  exit 1
+fi
+
+RELEASE_VERSION=$1
+GIT_USER=$(git config user.email)
+
+echo "Generating release for v${RELEASE_VERSION} using system user git user ${GIT_USER}"
+
+git checkout -b release/v${RELEASE_VERSION}
+
+# Auto-generate CHANGELOG updates
+git-chglog --next-tag v${RELEASE_VERSION} -o CHANGELOG.md
+
+# Commit CHANGELOG updates
 git add CHANGELOG.md
-git config --local user.email "action@github.com"
-git config --local user.name "GitHub Action"
-git commit -m "Update Changelog for Release [skip ci]"
-
-# Push the changes to the remote repository
-git push --quiet --set-upstream origin HEAD
-
+git commit -m "chore(changelog): Update CHANGELOG for v${RELEASE_VERSION}"
+git push origin release/v${RELEASE_VERSION}
