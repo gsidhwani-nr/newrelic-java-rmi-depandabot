@@ -23,30 +23,20 @@ if [[ -n "$previous_tag" ]]; then
   changelog=$(git log --pretty=format:"-%s (%h)" "$previous_tag"..HEAD |
     awk '/^-[[:space:]]*(feat|fix|docs|style|refactor|perf|test|chore|build|ci|revert)(\(.+\))?:/ {gsub(/^-/, "- "); print}')
 
-  # Create separate changelog sections based on commit types (assuming conventional commit messages)
-  features=$(echo "$changelog" | grep -E '^-( feat|feature)')
-  fix=$(echo "$changelog" | grep -E '^-( fix)')
-  docs=$(echo "$changelog" | grep -E '^-( docs|doc)')
-  style=$(echo "$changelog" | grep -E '^-( style)')
-  refactor=$(echo "$changelog" | grep -E '^-( refactor)')
-  perf=$(echo "$changelog" | grep -E '^-( perf)')
-  test=$(echo "$changelog" | grep -E '^-( test)')
-  chore=$(echo "$changelog" | grep -E '^-( chore|build|ci)')
-  revert=$(echo "$changelog" | grep -E '^-( revert)')
+  # Get the current date in YYYY-MM-DD format
+  release_date=$(date +"%Y-%m-%d")
 
   # Create the release notes for the current release
-  release_notes="# Release Notes - Version $GITHUB_RUN_NUMBER"  # Using the GitHub Run Number as the release number
-
-  # Add each changelog section to the release notes
-  release_notes+=$(create_changelog_section "Features" "$features")
-  release_notes+=$(create_changelog_section "Bug Fixes" "$fix")
-  release_notes+=$(create_changelog_section "Documentation" "$docs")
-  release_notes+=$(create_changelog_section "Styles" "$style")
-  release_notes+=$(create_changelog_section "Code Refactoring" "$refactor")
-  release_notes+=$(create_changelog_section "Performance Improvements" "$perf")
-  release_notes+=$(create_changelog_section "Tests" "$test")
-  release_notes+=$(create_changelog_section "Chores, Build, and CI" "$chore")
-  release_notes+=$(create_changelog_section "Reverts" "$revert")
+  release_notes="## $GITHUB_RUN_NUMBER ($release_date)\n\n"
+  release_notes+=$(create_changelog_section "Features" "$(echo "$changelog" | grep -E '^-( feat|feature)')")
+  release_notes+=$(create_changelog_section "Bug Fixes" "$(echo "$changelog" | grep -E '^-( fix)')")
+  release_notes+=$(create_changelog_section "Documentation" "$(echo "$changelog" | grep -E '^-( docs|doc)')")
+  release_notes+=$(create_changelog_section "Styles" "$(echo "$changelog" | grep -E '^-( style)')")
+  release_notes+=$(create_changelog_section "Code Refactoring" "$(echo "$changelog" | grep -E '^-( refactor)')")
+  release_notes+=$(create_changelog_section "Performance Improvements" "$(echo "$changelog" | grep -E '^-( perf)')")
+  release_notes+=$(create_changelog_section "Tests" "$(echo "$changelog" | grep -E '^-( test)')")
+  release_notes+=$(create_changelog_section "Chores, Build, and CI" "$(echo "$changelog" | grep -E '^-( chore|build|ci)')")
+  release_notes+=$(create_changelog_section "Reverts" "$(echo "$changelog" | grep -E '^-( revert)')")
 
   # Update the existing CHANGELOG.md file with the new release notes
   echo -e "$release_notes\n$(cat CHANGELOG.md)" > CHANGELOG.md
