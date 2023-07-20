@@ -20,8 +20,6 @@ if [[ -n "$previous_tag" ]]; then
   changelog=$(git log --pretty=format:"-%s (%h)" "$previous_tag"..HEAD |
     awk '/^-[[:space:]]*(feat|fix|docs|style|refactor|perf|test|chore|build|ci|revert)(\(.+\))?:/ {gsub(/^-/, "- "); print}')
 
-  echo "LOG=$changelog" >> $GITHUB_ENV
-
   # Create separate changelog sections based on commit types (assuming conventional commit messages)
   features=$(echo "$changelog" | grep -E '^-( feat|feature)')
   fix=$(echo "$changelog" | grep -E '^-( fix)')
@@ -33,7 +31,7 @@ if [[ -n "$previous_tag" ]]; then
   chore=$(echo "$changelog" | grep -E '^-( chore|build|ci)')
   revert=$(echo "$changelog" | grep -E '^-( revert)')
 
-  # Add header and each changelog section to the CHANGELOG.md file
+  # Create the CHANGELOG.md file and add each changelog section
   echo "# Changelog" > CHANGELOG.md
   echo >> CHANGELOG.md
   create_changelog_section "Features" "$features"
@@ -45,5 +43,12 @@ if [[ -n "$previous_tag" ]]; then
   create_changelog_section "Tests" "$test"
   create_changelog_section "Chores, Build, and CI" "$chore"
   create_changelog_section "Reverts" "$revert"
+
+  # Commit the generated CHANGELOG.md file
+  git add CHANGELOG.md
+  git config --local user.email "action@github.com"
+  git config --local user.name "GitHub Action"
+  git commit -m "Generate Changelog [skip ci]"
+  git push --quiet --set-upstream origin HEAD
 fi
 
