@@ -87,7 +87,7 @@ jobs:
           if [[ -n "$previous_tag" ]]; then
           changelog=$(git log --pretty=format:"- %s (%h)" $previous_tag..HEAD)
           echo "${changelog}:::::${previous_tag}"
-          echo "LOG=${changelog}" >> $GITHUB_ENV
+          echo "LOG=${changelog}" 
           fi
 
       - name: Create Release
