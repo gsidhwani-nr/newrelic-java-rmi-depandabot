@@ -18,7 +18,7 @@
 
 # New Relic Java Instrumentation for Java RMI 
 
-Provides instrumentation for the Java RMI on both the server and client side. Added
+Provides instrumentation for the Java RMI on both the server and client side. 
 
 ## Installation 
 
