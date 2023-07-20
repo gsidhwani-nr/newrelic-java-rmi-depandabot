@@ -1,3 +1,6 @@
+## v1.9(2023-07-20)
+
+
 ## 100 (2023-07-20)
 
 
@@ -14,3 +17,6 @@
 ### Features
 
 - feat: added new script 5 (f849bbe)
+### Features
+
+- feat: added new script 6 (73b2e93)
