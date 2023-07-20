@@ -27,7 +27,7 @@ if [[ -n "$previous_tag" ]]; then
   release_date=$(date +"%Y-%m-%d")
 
   # Create the release notes for the current release
-  release_notes="## $GITHUB_RUN_NUMBER ($release_date)\n\n"
+  release_notes="## $RELEASE_VERSION($release_date)\n\n"
   release_notes+=$(create_changelog_section "Features" "$(echo "$changelog" | grep -E '^-( feat|feature)')")
   release_notes+=$(create_changelog_section "Bug Fixes" "$(echo "$changelog" | grep -E '^-( fix)')")
   release_notes+=$(create_changelog_section "Documentation" "$(echo "$changelog" | grep -E '^-( docs|doc)')")
