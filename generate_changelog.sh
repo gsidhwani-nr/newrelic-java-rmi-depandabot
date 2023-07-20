@@ -19,7 +19,7 @@ previous_tag=$(git describe --abbrev=0 --tags 2>/dev/null) || true
 release_date=$(date +"%Y-%m-%d")
 
 # Create the release notes for the current release
-release_notes="Change Log:\n\n## $RELEASE_VERSION($release_date)\n\n"
+release_notes="##Release Notes:\n\n## $RELEASE_VERSION($release_date)\n\n"
 
 if [[ -n "$previous_tag" ]]; then
   # Pull the latest changes from the remote repository
