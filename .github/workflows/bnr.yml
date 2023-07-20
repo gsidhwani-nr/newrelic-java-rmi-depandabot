@@ -87,7 +87,9 @@ jobs:
           git config --local user.name "GitHub Action"
           git commit -m "Generate Changelog [skip ci]"
           git push
-          
+        env:
+         ACTIONS_TOKEN: ${{ secrets.NEWRELIC_BUILD_TOKEN }}   
+       
       - name: Create Release
         id: create_release
         uses: actions/github-script@v6
