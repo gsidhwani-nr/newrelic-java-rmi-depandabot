@@ -36,11 +36,11 @@ echo "Generating changelog..3."
   echo $changelog
 
   # Accumulate the changes for the current release
-  release_notes+=$(create_changelog_section "### Features" "$(echo "$changelog" | grep -E '^feat')")
-  release_notes+=$(create_changelog_section "### Fixes" "$(echo "$changelog" | grep -E '^fix')")
+  release_notes+=$(create_changelog_section "### Features\n" "$(echo "$changelog\n" | grep -E '^feat')")
+  release_notes+=$(create_changelog_section "### Fixes\n" "$(echo "$changelog\n" | grep -E '^fix')")
   echo "Generating changelog..4."
   echo $release_notes
-  release_notes+=$(create_changelog_section "### Documentation" "$(echo "$changelog" | grep -E '^docs')")
+  release_notes+=$(create_changelog_section "### Documentation\n" "$(echo "$changelog\n" | grep -E '^docs')")
 fi
 echo "Generating changelog..4."
   echo $release_notes
