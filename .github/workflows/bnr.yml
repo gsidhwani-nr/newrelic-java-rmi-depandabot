@@ -50,6 +50,7 @@ jobs:
             # Increment the minor version if it's less than 9
             if [[ $current_minor_version -lt 99 ]]; then
               minor_version=$((current_minor_version + 1))
+              major_version=$((current_major_version))
             else
               # Increment the major version and reset the minor version to 0
               major_version=$((current_major_version + 1))
