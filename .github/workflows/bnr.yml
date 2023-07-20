@@ -80,15 +80,13 @@ jobs:
           cd ${{env.CURRENT}}
 
       - name: Generate Changelog
-        id: generate_changelog
         run: |
-          echo "Generating changelog..."
-          previous_tag=$(git describe --abbrev=0 --tags 2>/dev/null) || true 
-          if [[ -n "$previous_tag" ]]; then
-          changelog=$(git log --pretty=format:"- %s (%h)" $previous_tag..HEAD)
-          echo "${changelog}:::::${previous_tag}" 
-          echo "LOG=${changelog}" >> $GITHUB_ENV 
-          fi
+          ./generate_changelog.sh
+          git add CHANGELOG.md
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git commit -m "Generate Changelog [skip ci]"
+          git push
           
       - name: Create Release
         id: create_release
