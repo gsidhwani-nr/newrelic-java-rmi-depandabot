@@ -16,19 +16,22 @@ echo "Generating changelog..."
 previous_tag=$(git describe --abbrev=0 --tags 2>/dev/null) || true
 
 if [[ -n "$previous_tag" ]]; then
-  changelog=$(git log --pretty=format:"-%s (%h)" "$previous_tag"..HEAD)
+  # Use awk to filter commit messages by type and format them
+  changelog=$(git log --pretty=format:"-%s (%h)" "$previous_tag"..HEAD |
+    awk '/^-[[:space:]]*(feat|fix|docs|style|refactor|perf|test|chore|build|ci|revert)(\(.+\))?:/ {gsub(/^-/, "- "); print}')
+
   echo "LOG=$changelog" >> $GITHUB_ENV
 
   # Create separate changelog sections based on commit types (assuming conventional commit messages)
-  features=$(echo "$changelog" | grep -E '^-( feat|feature)(\(.+\))?:' | sed 's/^-\s/- /')
-  fix=$(echo "$changelog" | grep -E '^-( fix)(\(.+\))?:' | sed 's/^-\s/- /')
-  docs=$(echo "$changelog" | grep -E '^-( docs|doc)(\(.+\))?:' | sed 's/^-\s/- /')
-  style=$(echo "$changelog" | grep -E '^-( style)(\(.+\))?:' | sed 's/^-\s/- /')
-  refactor=$(echo "$changelog" | grep -E '^-( refactor)(\(.+\))?:' | sed 's/^-\s/- /')
-  perf=$(echo "$changelog" | grep -E '^-( perf)(\(.+\))?:' | sed 's/^-\s/- /')
-  test=$(echo "$changelog" | grep -E '^-( test)(\(.+\))?:' | sed 's/^-\s/- /')
-  chore=$(echo "$changelog" | grep -E '^-( chore|build|ci)(\(.+\))?:' | sed 's/^-\s/- /')
-  revert=$(echo "$changelog" | grep -E '^-( revert)(\(.+\))?:' | sed 's/^-\s/- /')
+  features=$(echo "$changelog" | grep -E '^-( feat|feature)')
+  fix=$(echo "$changelog" | grep -E '^-( fix)')
+  docs=$(echo "$changelog" | grep -E '^-( docs|doc)')
+  style=$(echo "$changelog" | grep -E '^-( style)')
+  refactor=$(echo "$changelog" | grep -E '^-( refactor)')
+  perf=$(echo "$changelog" | grep -E '^-( perf)')
+  test=$(echo "$changelog" | grep -E '^-( test)')
+  chore=$(echo "$changelog" | grep -E '^-( chore|build|ci)')
+  revert=$(echo "$changelog" | grep -E '^-( revert)')
 
   # Add header and each changelog section to the CHANGELOG.md file
   echo "# Changelog" > CHANGELOG.md
