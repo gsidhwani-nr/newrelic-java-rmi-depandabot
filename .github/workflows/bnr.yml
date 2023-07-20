@@ -82,13 +82,7 @@ jobs:
       - name: Generate Changelog
         run: |
           ./generate_changelog.sh
-          git add CHANGELOG.md
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git commit -m "Generate Changelog [skip ci]"
-          git push
-        env:
-         ACTIONS_TOKEN: ${{ secrets.NEWRELIC_BUILD_TOKEN }}   
+            
        
       - name: Create Release
         id: create_release
