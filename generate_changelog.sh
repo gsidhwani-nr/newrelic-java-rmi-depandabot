@@ -34,24 +34,28 @@ if [[ -n "$previous_tag" ]]; then
   chore=$(echo "$changelog" | grep -E '^-( chore|build|ci)')
   revert=$(echo "$changelog" | grep -E '^-( revert)')
 
-  # Create the CHANGELOG.md file and add each changelog section
-  echo "# Changelog" > CHANGELOG.md
-  echo >> CHANGELOG.md
-  create_changelog_section "Features" "$features"
-  create_changelog_section "Bug Fixes" "$fix"
-  create_changelog_section "Documentation" "$docs"
-  create_changelog_section "Styles" "$style"
-  create_changelog_section "Code Refactoring" "$refactor"
-  create_changelog_section "Performance Improvements" "$perf"
-  create_changelog_section "Tests" "$test"
-  create_changelog_section "Chores, Build, and CI" "$chore"
-  create_changelog_section "Reverts" "$revert"
+  # Create the release notes for the current release
+  release_notes="# Release Notes - Version $GITHUB_RUN_NUMBER"  # Using the GitHub Run Number as the release number
 
-  # Commit the generated CHANGELOG.md file
+  # Add each changelog section to the release notes
+  release_notes+=$(create_changelog_section "Features" "$features")
+  release_notes+=$(create_changelog_section "Bug Fixes" "$fix")
+  release_notes+=$(create_changelog_section "Documentation" "$docs")
+  release_notes+=$(create_changelog_section "Styles" "$style")
+  release_notes+=$(create_changelog_section "Code Refactoring" "$refactor")
+  release_notes+=$(create_changelog_section "Performance Improvements" "$perf")
+  release_notes+=$(create_changelog_section "Tests" "$test")
+  release_notes+=$(create_changelog_section "Chores, Build, and CI" "$chore")
+  release_notes+=$(create_changelog_section "Reverts" "$revert")
+
+  # Update the existing CHANGELOG.md file with the new release notes
+  echo -e "$release_notes\n$(cat CHANGELOG.md)" > CHANGELOG.md
+
+  # Commit the updated CHANGELOG.md file
   git add CHANGELOG.md
   git config --local user.email "action@github.com"
   git config --local user.name "GitHub Action"
-  git commit -m "Generate Changelog [skip ci]"
+  git commit -m "Update Changelog for Release [skip ci]"
 
   # Push the changes to the remote repository
   git push --quiet --set-upstream origin HEAD
