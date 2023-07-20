@@ -21,7 +21,7 @@ release_date=$(date +"%Y-%m-%d")
 echo $release_date
 
 # Create the release notes for the current release
-release_notes="##Release Notes:\n\n## $RELEASE_VERSION($release_date)\n\n"
+release_notes="## Release Notes:\n\n## $RELEASE_VERSION($release_date)\n\n"
 echo "Generating changelog..2."
 echo $release_notes
 
