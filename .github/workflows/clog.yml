@@ -4,9 +4,12 @@ on:
     types:
       - created
 jobs:
+  
   changelog:
     runs-on: ubuntu-20.04
     steps:
+      - name: Create required package.json
+        run: test -f package.json || echo '{}' >package.json
       - name: "✏️ Generate release changelog"
         uses: scottbrenner/generate-changelog-action@master
         with:
