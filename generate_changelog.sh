@@ -16,6 +16,9 @@ echo "Generating changelog..."
 previous_tag=$(git describe --abbrev=0 --tags 2>/dev/null) || true
 
 if [[ -n "$previous_tag" ]]; then
+  # Pull the latest changes from the remote repository
+  git pull origin main
+
   # Use awk to filter commit messages by type and format them
   changelog=$(git log --pretty=format:"-%s (%h)" "$previous_tag"..HEAD |
     awk '/^-[[:space:]]*(feat|fix|docs|style|refactor|perf|test|chore|build|ci|revert)(\(.+\))?:/ {gsub(/^-/, "- "); print}')
@@ -49,6 +52,8 @@ if [[ -n "$previous_tag" ]]; then
   git config --local user.email "action@github.com"
   git config --local user.name "GitHub Action"
   git commit -m "Generate Changelog [skip ci]"
+
+  # Push the changes to the remote repository
   git push --quiet --set-upstream origin HEAD
 fi
 
