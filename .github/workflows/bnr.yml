@@ -84,7 +84,7 @@ jobs:
         id: generate_changelog
         run: |
           ./generate_changelog.sh
-          
+          echo "changelog=${{cat _BODY.md}}" >> $GITHUB_ENV
 
       - name: Create Release
         id: create_release
@@ -93,7 +93,7 @@ jobs:
           github-token: ${{ secrets.NEWRELIC_BUILD_TOKEN }}
           script: |
             try {
-                var changelog = `Release Changelog:\n\n${{ cat _BODY.md }}`;
+                var changelog = `Release Changelog:\n\n${{ env.changelog }}`;
                 var tag = '' + `${{ steps.set_tag.outputs.tag }}`;
                 const archivePath = '/tmp/to/${{ env.RELEASE_NAME}}${{ steps.set_tag.outputs.tag }}.zip';
                 var response = await github.rest.repos.createRelease({
