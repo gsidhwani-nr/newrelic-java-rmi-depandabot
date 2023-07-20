@@ -84,7 +84,7 @@ jobs:
         id: generate_changelog
         run: |
           ./generate_changelog.sh
-          echo "changelog=${{cat _BODY.md}}" >> $GITHUB_ENV
+          echo "changelog=$(cat _BODY.md)" >> $GITHUB_ENV
 
       - name: Create Release
         id: create_release
