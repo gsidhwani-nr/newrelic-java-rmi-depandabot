@@ -13,4 +13,4 @@ jobs:
       - name: "✏️ Generate release changelog"
         uses: scottbrenner/generate-changelog-action@master
         with:
-          token: ${{ secrets.NEWRELIC_BUILD_TOKEN }} 
+          package-dir: './package.json' 
