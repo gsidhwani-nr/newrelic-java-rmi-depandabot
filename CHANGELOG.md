@@ -1,3 +1,8 @@
+Change Log:
+
+## $ RELEASE_VERSION(2023-07-20)
+
+
 ## v1.9(2023-07-20)
 
 
@@ -20,3 +25,6 @@
 ### Features
 
 - feat: added new script 6 (73b2e93)
+Documentation
+
+docs: added new script 7 (0aff1fb)
