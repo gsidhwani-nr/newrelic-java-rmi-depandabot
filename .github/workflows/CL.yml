@@ -23,12 +23,6 @@ jobs:
         with:
           sinceTag: "v3.2"
           stripHeaders: true
-          verbose: false
-          issuesWoLabels: false
-          maxIssues: 300
-          stripGeneratorNotice: true
-          compareLink: false
-          simpleList: true
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload changelog
