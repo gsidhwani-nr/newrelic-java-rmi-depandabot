@@ -94,7 +94,6 @@ jobs:
                 var tag = '' + `${{ steps.set_tag.outputs.tag }}`;
                 const archivePath = '/tmp/to/${{ env.RELEASE_NAME}}${{ steps.set_tag.outputs.tag }}.zip';
                 var response = await github.rest.repos.createRelease({
-                  draft:false,
                   generate_release_notes:false,
                   name:tag,
                   owner:context.repo.owner,
@@ -169,7 +168,6 @@ jobs:
                 var tag = '' + `${{ steps.set_tag.outputs.tag }}`;
                 const archivePath = '/tmp/to/${{ env.RELEASE_NAME}}${{ steps.set_tag.outputs.tag }}.zip';
                 var _response = await github.rest.repos.updateRelease({
-                  draft:false,
                   generate_release_notes:true,
                   owner:context.repo.owner,
                   prerelease:false,
