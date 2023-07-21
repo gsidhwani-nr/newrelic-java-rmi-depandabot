@@ -1,3 +1,8 @@
+## VERSION: v3.13 | Created: 2023-07-21
+### Bug Fixes
+- Update bnr.yml
+
+\n
 ## VERSION: v3.12 | Created: 2023-07-21
 ### Features
 - Update bnr.yml
