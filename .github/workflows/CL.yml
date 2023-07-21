@@ -23,7 +23,7 @@ jobs:
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           commit-types: "fix:Bug Fixes,feat:Features,doc:Documentation"
-          template-path: ".github/workflows/CURSEFORGE_CHANGELOG.tpl.md"
+          template-path: ".github/workflows/CHANGELOG.tpl.md"
 
 
       - name: Upload changelog
