@@ -120,7 +120,6 @@ jobs:
           upload_url: ${{ env.RELEASE_UPLOAD_URL }}
           asset_content_type: application/zip
      
-     ¸
       - name: "Generate release changelog"
         id: github_changelog
         uses: Helmisek/conventional-changelog-generator@v1.0.6-release
