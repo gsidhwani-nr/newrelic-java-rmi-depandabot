@@ -80,11 +80,14 @@ jobs:
           zip -r /tmp/to/${{ env.RELEASE_NAME}}${{ steps.set_tag.outputs.tag }}.zip *.jar
           cd ${{env.CURRENT}}
 
-      - name: Generate Changelog
-        id: generate_changelog
-        run: |
-          ./generate_changelog.sh
-          echo "changelog=$(cat _BODY.md)" >> $GITHUB_ENV
+      # github changelog
+      - name: "Generate release changelog"
+        id: github_changelog
+        uses: Helmisek/conventional-changelog-generator@v1.0.6-release
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          commit-types: "fix:Bug Fixes,feat:Features,doc:Documentation"
+          template-path: ".github/workflows/CHANGELOG.tpl.md"
 
       - name: Create Release
         id: create_release
@@ -93,7 +96,7 @@ jobs:
           github-token: ${{ secrets.NEWRELIC_BUILD_TOKEN }}
           script: |
             try {
-                var changelog = `Release Changelog:\n\n${{ env.changelog }}`;
+                var changelog = ${{steps.github_changelog.outputs.changelog}};
                 var tag = '' + `${{ steps.set_tag.outputs.tag }}`;
                 const archivePath = '/tmp/to/${{ env.RELEASE_NAME}}${{ steps.set_tag.outputs.tag }}.zip';
                 var response = await github.rest.repos.createRelease({
