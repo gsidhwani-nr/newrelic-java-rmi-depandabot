@@ -1,3 +1,7 @@
+## Version: [v3.32](https://github.com/gsidhwani-nr/newrelic-java-rmi-depandabot/releases/tag/v3.32) | Created: 2023-07-21
+### Bug Fixes
+- 12121212 Update bnr.yml
+
 ## Version: [v3.31](https://github.com/gsidhwani-nr/newrelic-java-rmi-depandabot/releases/tag/v3.31) | Created: 2023-07-21
 ### Bug Fixes
 - UiUiUiUi Update bnr.yml
