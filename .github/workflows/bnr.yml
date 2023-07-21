@@ -120,7 +120,7 @@ jobs:
           upload_url: ${{ env.RELEASE_UPLOAD_URL }}
           asset_content_type: application/zip
      
-     # github changelog
+     ¸
       - name: "Generate release changelog"
         id: github_changelog
         uses: Helmisek/conventional-changelog-generator@v1.0.6-release
@@ -157,32 +157,28 @@ jobs:
 
           # Push the changes to the remote repository
            git push --quiet --set-upstream origin HEAD
-           
-           name: update Release
-                  id: update_release
-                  uses: actions/github-script@v6
-                  with:
-                    github-token: ${{ secrets.GITHUB_TOKEN }}
-                    script: |
-                      try {
-                          var changelog = `${{steps.github_changelog.outputs.changelog}}`;
-                          var tag = '' + `${{ steps.set_tag.outputs.tag }}`;
-                          const archivePath = '/tmp/to/${{ env.RELEASE_NAME}}${{ steps.set_tag.outputs.tag }}.zip';
-                          var response = await github.rest.repos.updateRelease({
-                            draft:false,
-                            generate_release_notes:true,
-                            name:tag,
-                            owner:context.repo.owner,
-                            prerelease:false,
-                            repo:context.repo.repo,
-                            tag_name:tag,
-                            body:changelog
-                          });
+   
+   - name: Update Release
+        id: update_release
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            try {
+                var changelog = `${{steps.github_changelog.outputs.changelog}}`;
+                var release_id = `${{env.RELEASE_ID}}`;
+                var tag = '' + `${{ steps.set_tag.outputs.tag }}`;
+                const archivePath = '/tmp/to/${{ env.RELEASE_NAME}}${{ steps.set_tag.outputs.tag }}.zip';
+                var _response = await github.rest.repos.updateRelease({
+                  generate_release_notes:true,
+                  body:changelog,
+                  release_id:release_id
+                });
 
-                core.exportVariable('RELEASE_ID', response.data.id);
-                core.exportVariable('RELEASE_URL', response.data.html_url);
-                core.exportVariable('RELEASE_UPLOAD_URL', response.data.upload_url);
+                core.exportVariable('RELEASE_ID', _response.data.id);
+                core.exportVariable('RELEASE_URL', _response.data.html_url);
+                core.exportVariable('RELEASE_UPLOAD_URL', _response.data.upload_url);
               } catch (error) {
                 core.setFailed(error.message);
               }
- 
+    
