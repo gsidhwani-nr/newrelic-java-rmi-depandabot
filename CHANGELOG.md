@@ -1,3 +1,7 @@
+## Version: [v3.18](https://github.com/gsidhwani-nr/newrelic-java-rmi-depandabot/releases/tag/v3.18) | Created: 2023-07-21
+### Bug Fixes
+- Java Agent Library upgrdaed to 7.5.0
+
 ## Version: [v3.17](https://github.com/gsidhwani-nr/newrelic-java-rmi-depandabot/releases/tag/v3.17) | Created: 2023-07-21
 ### Build Upgrades
 - Update bnr.yml
