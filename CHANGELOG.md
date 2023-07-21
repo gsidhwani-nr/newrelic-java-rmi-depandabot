@@ -1,3 +1,10 @@
+(VERSION: v3.10 | Created: 2023-07-21\n
+### Bug Fixes
+- Update CHANGELOG.tpl.md
+
+### Features
+- Update bnr.yml
+)
 \n\n## CHANGELOG
 
 
