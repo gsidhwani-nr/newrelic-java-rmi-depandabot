@@ -16,7 +16,7 @@
 ![GitHub pull requests closed](https://img.shields.io/github/issues-pr-closed/newrelic/newrelic-java-rmi)
 
 
-# New Relic Java Instrumentation for Java RMI Aded
+# New Relic Java Instrumentation for Java RMI Aded 2
 
 Provides instrumentation for the Java RMI on both the server and client side. 
 
