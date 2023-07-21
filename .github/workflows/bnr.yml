@@ -169,9 +169,14 @@ jobs:
                 var tag = '' + `${{ steps.set_tag.outputs.tag }}`;
                 const archivePath = '/tmp/to/${{ env.RELEASE_NAME}}${{ steps.set_tag.outputs.tag }}.zip';
                 var _response = await github.rest.repos.updateRelease({
+                  draft:false,
                   generate_release_notes:true,
-                  body:changelog,
-                  release_id:release_id
+                  name:tag,
+                  owner:context.repo.owner,
+                  prerelease:false,
+                  repo:context.repo.repo,
+                  tag_name:tag,
+                  body:changelog
                 });
 
                 core.exportVariable('RELEASE_ID', _response.data.id);
