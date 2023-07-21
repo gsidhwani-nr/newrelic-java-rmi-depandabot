@@ -1,0 +1,38 @@
+name: Build and Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+
+# github changelog
+      - name: "Generate release changelog"
+        id: github_changelog
+        uses: heinrichreimer/github-changelog-generator-action@v2.3
+        with:
+          sinceTag: "v2.1"
+          stripHeaders: true
+          verbose: false
+          issuesWoLabels: false
+          maxIssues: 300
+          stripGeneratorNotice: true
+          compareLink: false
+          simpleList: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload changelog
+        uses: actions/upload-artifact@v3
+        with:
+          name: changelog
+          path: CHANGELOG.md
