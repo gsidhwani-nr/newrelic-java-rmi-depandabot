@@ -94,10 +94,11 @@ jobs:
                 var tag = '' + `${{ steps.set_tag.outputs.tag }}`;
                 const archivePath = '/tmp/to/${{ env.RELEASE_NAME}}${{ steps.set_tag.outputs.tag }}.zip';
                 var response = await github.rest.repos.createRelease({
-                  generate_release_notes:false,
+                  draft:false,
+                  generate_release_notes:true,
                   name:tag,
                   owner:context.repo.owner,
-                  prerelease:true,
+                  prerelease:false,
                   repo:context.repo.repo,
                   tag_name:tag,
                   body:changelog
