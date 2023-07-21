@@ -161,7 +161,7 @@ jobs:
       - name: Update Release Notes
         id: update_release
         run: |
-          release_id="${{ env.RELEASE_ID }}}"
+          release_id="${{ env.RELEASE_ID }}"
           release_notes="${{steps.github_changelog.outputs.changelog}}"
           updated_release=$(curl -s -X PATCH -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
                                -H "Accept: application/vnd.github.v3+json" \
