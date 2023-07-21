@@ -157,7 +157,7 @@ jobs:
           # Push the changes to the remote repository
            git push --quiet --set-upstream origin HEAD
    
-   - name: Update Release
+      - name: Update Release
         id: update_release
         uses: actions/github-script@v6
         with:
@@ -180,4 +180,4 @@ jobs:
               } catch (error) {
                 core.setFailed(error.message);
               }
-    
+
