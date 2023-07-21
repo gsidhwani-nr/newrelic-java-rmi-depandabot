@@ -19,10 +19,8 @@ jobs:
 # github changelog
       - name: "Generate release changelog"
         id: github_changelog
-        uses: heinrichreimer/github-changelog-generator-action@v2.3
+        uses: Helmisek/conventional-changelog-generator@v1.0.6-release
         with:
-          sinceTag: "v3.2"
-          stripHeaders: true
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload changelog
