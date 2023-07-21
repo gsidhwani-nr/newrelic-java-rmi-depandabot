@@ -157,18 +157,32 @@ jobs:
 
           # Push the changes to the remote repository
            git push --quiet --set-upstream origin HEAD
+           
+           name: update Release
+                  id: update_release
+                  uses: actions/github-script@v6
+                  with:
+                    github-token: ${{ secrets.GITHUB_TOKEN }}
+                    script: |
+                      try {
+                          var changelog = `${{steps.github_changelog.outputs.changelog}}`;
+                          var tag = '' + `${{ steps.set_tag.outputs.tag }}`;
+                          const archivePath = '/tmp/to/${{ env.RELEASE_NAME}}${{ steps.set_tag.outputs.tag }}.zip';
+                          var response = await github.rest.repos.updateRelease({
+                            draft:false,
+                            generate_release_notes:true,
+                            name:tag,
+                            owner:context.repo.owner,
+                            prerelease:false,
+                            repo:context.repo.repo,
+                            tag_name:tag,
+                            body:changelog
+                          });
 
-      - name: Update Release Notes
-        id: update_release
-        run: |
-          release_id="${{ env.RELEASE_ID }}"
-          release_notes="${{steps.github_changelog.outputs.changelog}}"
-          # Remove leading and trailing spaces from release_notes using awk
-          # release_notes=$(echo "$release_notes" | awk '{$1=$1};1')
-          # Escape double quotes in release_notes
-          # release_notes=$(echo "$release_notes" | sed 's/"/\\"/g')
-          updated_release=$(curl -s -X PATCH -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-                               -H "Accept: application/vnd.github.v3+json" \
-                               -d "{\"body\": $release_notes}" \
-                               "https://api.github.com/repos/${{ github.repository }}/releases/$release_id")
-          echo "::set-output name=updated_release::$updated_release"     
+                core.exportVariable('RELEASE_ID', response.data.id);
+                core.exportVariable('RELEASE_URL', response.data.html_url);
+                core.exportVariable('RELEASE_UPLOAD_URL', response.data.upload_url);
+              } catch (error) {
+                core.setFailed(error.message);
+              }
+ 
