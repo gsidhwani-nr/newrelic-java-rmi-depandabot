@@ -1,4 +1,4 @@
-name: Build and Release
+name: Build and Release v1.0
 
 on:
   push:
@@ -129,7 +129,7 @@ jobs:
           # Content to add at the top
           # Get the current date in YYYY-MM-DD format
           release_date=$(date +"%Y-%m-%d")
-          version="## VERSION: ${{env.RELEASE_VERSION}} | Created: $release_date"
+          version="## Version: ${{env.RELEASE_VERSION}} | Created: $release_date"
           content="$version${{steps.github_changelog.outputs.changelog}}"
 
           # Existing file
@@ -138,7 +138,6 @@ jobs:
           # Create a temporary file with the content at the top and existing content below
           
           echo "$content" > temp_file.txt
-          echo "\n" >> temp_file.txt
           cat "$file" >> temp_file.txt
 
           # Overwrite the original file with the updated content
