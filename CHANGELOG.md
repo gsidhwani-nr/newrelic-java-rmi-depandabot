@@ -1,3 +1,7 @@
+## VERSION: v3.11 | Created: 2023-07-21
+### Documentation
+- Update bnr.yml
+)
 (VERSION: v3.10 | Created: 2023-07-21\n
 ### Bug Fixes
 - Update CHANGELOG.tpl.md
