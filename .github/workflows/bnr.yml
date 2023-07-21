@@ -138,6 +138,7 @@ jobs:
           # Create a temporary file with the content at the top and existing content below
           
           echo "$content" > temp_file.txt
+          echo "\n" >> temp_file.txt
           cat "$file" >> temp_file.txt
 
           # Overwrite the original file with the updated content
