@@ -170,6 +170,7 @@ jobs:
                 var _response = await github.rest.repos.updateRelease({
                   generate_release_notes:true,
                   owner:context.repo.owner,
+                  repo: context.repo.repo,
                   prerelease:false,
                   release_id:release_id,
                   body:changelog
