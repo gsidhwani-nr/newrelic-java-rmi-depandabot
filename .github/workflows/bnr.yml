@@ -124,4 +124,26 @@ jobs:
           asset_name: ${{ env.RELEASE_NAME}}${{ steps.set_tag.outputs.tag }}.zip
           upload_url: ${{ env.RELEASE_UPLOAD_URL }}
           asset_content_type: application/zip
+      - name: update CHANGELOG.md
+        run: |
+          # Content to add at the top
+          content="\n\n${{steps.github_changelog.outputs.changelog}}"
 
+          # Existing file
+          file="CHANGELOG.md"
+
+          # Create a temporary file with the content at the top and existing content below
+          echo "$content" > temp_file.txt
+          cat "$file" >> temp_file.txt
+
+          # Overwrite the original file with the updated content
+          mv temp_file.txt "$file"
+          
+          # Commit the updated CHANGELOG.md file
+           git add CHANGELOG.md
+           git config --local user.email "action@github.com"
+           git config --local user.name "GitHub Action"
+           git commit -m "Update Changelog for Release [skip ci]"
+
+          # Push the changes to the remote repository
+           git push --quiet --set-upstream origin HEAD
