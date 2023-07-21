@@ -162,13 +162,13 @@ jobs:
         id: update_release
         run: |
           release_id="${{ env.RELEASE_ID }}"
-          release_notes=${{steps.github_changelog.outputs.changelog}}
+          release_notes="${{steps.github_changelog.outputs.changelog}}"
           # Remove leading and trailing spaces from release_notes using awk
           # release_notes=$(echo "$release_notes" | awk '{$1=$1};1')
           # Escape double quotes in release_notes
           # release_notes=$(echo "$release_notes" | sed 's/"/\\"/g')
           updated_release=$(curl -s -X PATCH -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
                                -H "Accept: application/vnd.github.v3+json" \
-                               -d "{\"body\": \"$release_notes\"}" \
+                               -d "{\"body\": $release_notes}" \
                                "https://api.github.com/repos/${{ github.repository }}/releases/$release_id")
           echo "::set-output name=updated_release::$updated_release"     
