@@ -129,7 +129,7 @@ jobs:
           # Content to add at the top
           # Get the current date in YYYY-MM-DD format
           release_date=$(date +"%Y-%m-%d")
-          version="$(VERSION: ${{env.RELEASE_VERSION}} | Created: $release_date)\n"
+          version="VERSION: ${{env.RELEASE_VERSION}} | Created: $release_date\n"
           content="($version${{steps.github_changelog.outputs.changelog}})"
 
           # Existing file
