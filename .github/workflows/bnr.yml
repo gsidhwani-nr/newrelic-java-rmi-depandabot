@@ -111,6 +111,7 @@ jobs:
                 });
 
                 core.exportVariable('RELEASE_ID', response.data.id);
+                core.exportVariable('RELEASE_URL', response.data.html_url);
                 core.exportVariable('RELEASE_UPLOAD_URL', response.data.upload_url);
               } catch (error) {
                 core.setFailed(error.message);
@@ -129,7 +130,7 @@ jobs:
           # Content to add at the top
           # Get the current date in YYYY-MM-DD format
           release_date=$(date +"%Y-%m-%d")
-          version="## Version: ${{env.RELEASE_VERSION}} | Created: $release_date"
+          version="## Version: [${{env.RELEASE_VERSION}}](${{ env.RELEASE_URL }}) | Created: $release_date"
           content="$version${{steps.github_changelog.outputs.changelog}}"
 
           # Existing file
