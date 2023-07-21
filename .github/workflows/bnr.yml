@@ -81,15 +81,7 @@ jobs:
           zip -r /tmp/to/${{ env.RELEASE_NAME}}${{ steps.set_tag.outputs.tag }}.zip *.jar
           cd ${{env.CURRENT}}
 
-      # github changelog
-      - name: "Generate release changelog"
-        id: github_changelog
-        uses: Helmisek/conventional-changelog-generator@v1.0.6-release
-        with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          commit-types: "fix:Bug Fixes,feat:Features,doc:Documentation,build:Build Upgrades"
-          template-path: ".github/workflows/CHANGELOG.tpl.md"
-          sinceTag: ${{ steps.set_release_version.outputs.latest_tag }}
+      
 
       - name: Create Release
         id: create_release
@@ -98,7 +90,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             try {
-                var changelog = `${{steps.github_changelog.outputs.changelog}}`;
+                var changelog = ``;
                 var tag = '' + `${{ steps.set_tag.outputs.tag }}`;
                 const archivePath = '/tmp/to/${{ env.RELEASE_NAME}}${{ steps.set_tag.outputs.tag }}.zip';
                 var response = await github.rest.repos.createRelease({
@@ -127,6 +119,17 @@ jobs:
           asset_name: ${{ env.RELEASE_NAME}}${{ steps.set_tag.outputs.tag }}.zip
           upload_url: ${{ env.RELEASE_UPLOAD_URL }}
           asset_content_type: application/zip
+     
+     # github changelog
+      - name: "Generate release changelog"
+        id: github_changelog
+        uses: Helmisek/conventional-changelog-generator@v1.0.6-release
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          commit-types: "fix:Bug Fixes,feat:Features,doc:Documentation,build:Build Upgrades"
+          template-path: ".github/workflows/CHANGELOG.tpl.md"
+         
+     
       - name: update CHANGELOG.md
         run: |
           # Content to add at the top
