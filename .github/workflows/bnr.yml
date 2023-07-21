@@ -130,7 +130,7 @@ jobs:
           # Get the current date in YYYY-MM-DD format
           release_date=$(date +"%Y-%m-%d")
           version="## VERSION: ${{env.RELEASE_VERSION}} | Created: $release_date"
-          content="$version${{steps.github_changelog.outputs.changelog}})"
+          content="$version${{steps.github_changelog.outputs.changelog}}"
 
           # Existing file
           file="CHANGELOG.md"
