@@ -33,11 +33,28 @@ jobs:
         run: |
           ./gradlew build install verifyInstrumentation
 
+      - name: Build with Gradle and verifyInstrumentation
+        id: define_release_type
+        run: |
+           echo "Generating changelog to check type of release..."
+           old_tag=$(git describe --abbrev=0 --tags 2>/dev/null) || true
+           if [[ -n "$old_tag" ]]; then
+            changelog=$(git log --pretty=format:"- %s (%h)" $previous_tag..HEAD)
+           fi
+           if echo "$changelog" | grep -iqE '\bBREAKING CHANGE\b'; then
+            echo "RELEASE_TYPE=major" >> $GITHUB_ENV
+           elif echo "$changelog" | grep -iqE '\bfeat\b'; then
+            echo "RELEASE_TYPE=minor" >> $GITHUB_ENV
+           else
+            echo "RELEASE_TYPE=patch" >> $GITHUB_ENV
+           fi
+           
       - name: Set release version
         id: set_release_version
         run: |
           major_version=2
           minor_version=0
+          patch_revision=0
 
           # Retrieve the latest release tag
           latest_tag=$(git describe --abbrev=0 --tags 2>/dev/null) || true
@@ -46,20 +63,23 @@ jobs:
             # Extract the major and minor versions from the latest tag
             current_major_version=$(echo $latest_tag | cut -d'.' -f1 | sed 's/v//')
             current_minor_version=$(echo $latest_tag | cut -d'.' -f2)
-
-            # Increment the minor version if it's less than 9
-            if [[ $current_minor_version -lt 99 ]]; then
+            current_patch_revision=$(echo $latest_tag | cut -d'.' -f3)
+    
+            if [ "${{ env.RELEASE_TYPE }}" = "major" ]; then
+              major_version=$((current_major_version +1 ))
+            elif [ "${{ env.RELEASE_TYPE }}" = "minor" ]; then
               minor_version=$((current_minor_version + 1))
               major_version=$((current_major_version))
             else
-              # Increment the major version and reset the minor version to 0
-              major_version=$((current_major_version + 1))
-              minor_version=0
+              patch_revision=$((current_patch_revision + 1))
+              minor_version=$((current_minor_version))
+              major_version=$((current_major_version))
             fi
+         
           fi
 
           # Set the release version environment variable
-          release_version="v${major_version}.${minor_version}"
+          release_version="v${major_version}.${minor_version}.${patch_revision}"
           echo "RELEASE_VERSION=${release_version}" >> $GITHUB_ENV
 
       - name: Set Tag
