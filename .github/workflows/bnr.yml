@@ -181,7 +181,7 @@ jobs:
       - name: Get Compare URL
         run: |
             compare=$(echo ${{ env.RELEASE_URL }} | sed 's/releases\/tag.*/compare/')
-            compareurl=echo "Full Changelog: [${{ env.LATEST_TAG }}...${{ steps.set_tag.outputs.tag }} ] ($compare/${{ env.LATEST_TAG }}...${{ steps.set_tag.outputs.tag }})"
+            compareurl=$(echo "Full Changelog: [${{ env.LATEST_TAG }}...${{ steps.set_tag.outputs.tag }} ] ($compare/${{ env.LATEST_TAG }}...${{ steps.set_tag.outputs.tag }})")
             echo "COMPAREURL=${compareurl}" >> $GITHUB_ENV
             
       - name: Update Release
