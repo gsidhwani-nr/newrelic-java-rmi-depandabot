@@ -184,7 +184,10 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             try {
-                var changelog = `${{steps.github_changelog.outputs.changelog}}`;
+                
+                var compare = echo ${{ env.RELEASE_URL }} | sed 's/releases\/tag.*/compare/';
+                var compareurl = '\nFull Changelog:\n'compare + '/' +${{ steps.set_release_name.outputs.previous_tag }} +'...'+${{ steps.set_tag.outputs.tag }};
+                var changelog = `${{steps.github_changelog.outputs.changelog}}` + compareurl ;
                 var release_id = `${{env.RELEASE_ID}}`;
                 var tag = '' + `${{ steps.set_tag.outputs.tag }}`;
                 const archivePath = '/tmp/to/${{ env.RELEASE_NAME}}${{ steps.set_tag.outputs.tag }}.zip';
