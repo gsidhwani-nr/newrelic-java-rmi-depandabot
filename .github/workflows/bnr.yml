@@ -33,13 +33,13 @@ jobs:
         run: |
           ./gradlew build install verifyInstrumentation
 
-      - name: Build with Gradle and verifyInstrumentation
+      - name: Identify Release Type
         id: define_release_type
         run: |
            echo "Generating changelog to check type of release..."
            old_tag=$(git describe --abbrev=0 --tags 2>/dev/null) || true
            if [[ -n "$old_tag" ]]; then
-            changelog=$(git log --pretty=format:"- %s (%h)" $previous_tag..HEAD)
+            changelog=$(git log --pretty=format:"- %s (%h)" $old_tag..HEAD)
            fi
            if echo "$changelog" | grep -iqE '\bBREAKING CHANGE\b'; then
             echo "RELEASE_TYPE=major" >> $GITHUB_ENV
@@ -145,7 +145,7 @@ jobs:
         uses: Helmisek/conventional-changelog-generator@v1.0.6-release
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          commit-types: "fix:Bug Fixes,feat:Features,doc:Documentation,build:Build Upgrades"
+          commit-types: "fix:Bug Fixes,feat:Features,doc:Documentation,build:Build Upgrades,BREAKING CHANGE:Enhancements"
           template-path: ".github/workflows/CHANGELOG.tpl.md"
          
      
