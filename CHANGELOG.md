@@ -1,3 +1,7 @@
+## Version: [v4.0.2](https://github.com/gsidhwani-nr/newrelic-java-rmi-depandabot/releases/tag/v4.0.2) | Created: 2023-07-24
+### Documentation
+- ReadMeUpdate 2
+
 ## Version: [v4.0.1](https://github.com/gsidhwani-nr/newrelic-java-rmi-depandabot/releases/tag/v4.0.1) | Created: 2023-07-24
 ### Documentation
 - ReadMeUpdate
