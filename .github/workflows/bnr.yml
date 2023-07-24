@@ -176,7 +176,13 @@ jobs:
 
           # Push the changes to the remote repository
            git push --quiet --set-upstream origin HEAD
-   
+      
+      - name: Get Compare URL
+        run: |
+            compare = echo ${{ env.RELEASE_URL }} | sed 's/releases\/tag.*/compare/';
+            compareurl = '\nFull Changelog:\n' + compare + '/' +${{ steps.set_release_name.outputs.previous_tag }} +'...'+${{ steps.set_tag.outputs.tag }};
+            echo "COMPAREURL=${compareurl}" >> $GITHUB_ENV
+            
       - name: Update Release
         id: update_release
         uses: actions/github-script@v6
@@ -185,9 +191,8 @@ jobs:
           script: |
             try {
                 
-                var compare = echo ${{ env.RELEASE_URL }} | sed 's/releases\/tag.*/compare/';
-                var compareurl = '\nFull Changelog:\n' + compare + '/' +${{ steps.set_release_name.outputs.previous_tag }} +'...'+${{ steps.set_tag.outputs.tag }};
-                var changelog = `${{steps.github_changelog.outputs.changelog}}` + compareurl ;
+                
+                var changelog = `${{steps.github_changelog.outputs.changelog}}` + `${{env.COMPAREURL}}` ;
                 var release_id = `${{env.RELEASE_ID}}`;
                 var tag = '' + `${{ steps.set_tag.outputs.tag }}`;
                 const archivePath = '/tmp/to/${{ env.RELEASE_NAME}}${{ steps.set_tag.outputs.tag }}.zip';
