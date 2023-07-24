@@ -186,7 +186,7 @@ jobs:
             try {
                 
                 var compare = echo ${{ env.RELEASE_URL }} | sed 's/releases\/tag.*/compare/';
-                var compareurl = '\nFull Changelog:\n'compare + '/' +${{ steps.set_release_name.outputs.previous_tag }} +'...'+${{ steps.set_tag.outputs.tag }};
+                var compareurl = '\nFull Changelog:\n' + compare + '/' +${{ steps.set_release_name.outputs.previous_tag }} +'...'+${{ steps.set_tag.outputs.tag }};
                 var changelog = `${{steps.github_changelog.outputs.changelog}}` + compareurl ;
                 var release_id = `${{env.RELEASE_ID}}`;
                 var tag = '' + `${{ steps.set_tag.outputs.tag }}`;
