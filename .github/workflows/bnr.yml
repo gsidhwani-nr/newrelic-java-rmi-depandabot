@@ -58,6 +58,7 @@ jobs:
 
           # Retrieve the latest release tag
           latest_tag=$(git describe --abbrev=0 --tags 2>/dev/null) || true
+          echo "LATEST_TAG=${latest_tag}" >> $GITHUB_ENV
 
           if [[ -n "$latest_tag" && $latest_tag == v* ]]; then
             # Extract the major and minor versions from the latest tag
@@ -180,7 +181,7 @@ jobs:
       - name: Get Compare URL
         run: |
             compare=$(echo ${{ env.RELEASE_URL }} | sed 's/releases\/tag.*/compare/')
-            compareurl= echo "\nFull Changelog: [${{ steps.set_release_version.outputs.latest_tag }}...${{ steps.set_tag.outputs.tag }} ] ($compare/${{ steps.set_release_version.outputs.latest_tag }}...${{ steps.set_tag.outputs.tag }})"
+            compareurl= echo "Full Changelog: [${{ env.LATEST_TAG }}...${{ steps.set_tag.outputs.tag }} ] ($compare/${{ env.LATEST_TAG }}...${{ steps.set_tag.outputs.tag }})"
             echo "COMPAREURL=${compareurl}" >> $GITHUB_ENV
             
       - name: Update Release
