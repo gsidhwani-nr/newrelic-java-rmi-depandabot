@@ -4,9 +4,8 @@
 apply plugin: 'java'
 
 dependencies {
-   // Declare a dependency on each JAR you want to instrument
-   // Example:
-   // implementation 'javax.servlet:servlet-api:2.5'
+   implementation 'org.apache.httpcomponents:httpclient:4.5.13'
+   implementation 'com.google.guava:guava:32.0.0-jre'
 
    // New Relic Java Agent dependencies
    implementation 'com.newrelic.agent.java:newrelic-agent:7.5.0'
